@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Databases
+*.db
+*.sqlite3
+
+# Env files
+.env
+
+# Output folders
+outputs/
+
+# Logs
+*.log
