@@ -1,7 +1,8 @@
-"""Import API router."""
-from fastapi import APIRouter, UploadFile, File
+"""Import API router with PDF and DOCX support."""
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List
 import uuid
+import io
 
 from database import get_db
 from models import TextSegment
@@ -9,14 +10,60 @@ from models import TextSegment
 router = APIRouter()
 
 
-@router.post("/text")
-async def import_text(
+def extract_text_from_pdf(file_content: bytes) -> str:
+    """Extract text from PDF file."""
+    try:
+        from pypdf import PdfReader
+        reader = PdfReader(io.BytesIO(file_content))
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() + "\n"
+        return text
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"PDF extraction failed: {str(e)}")
+
+
+def extract_text_from_docx(file_content: bytes) -> str:
+    """Extract text from DOCX file."""
+    try:
+        from docx import Document
+        doc = Document(io.BytesIO(file_content))
+        text = ""
+        for para in doc.paragraphs:
+            text += para.text + "\n"
+        return text
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"DOCX extraction failed: {str(e)}")
+
+
+def get_file_extension(filename: str) -> str:
+    """Get file extension in lowercase."""
+    return filename.split('.')[-1].lower() if '.' in filename else ''
+
+
+@router.post("/file")
+async def import_file(
     file: UploadFile = File(...),
     segment_type: str = "paragraph"
 ):
-    """导入文本文件"""
+    """导入文件（支持 TXT, MD, PDF, DOC, DOCX）"""
+    # Read file content
     content = await file.read()
-    text = content.decode('utf-8')
+    
+    # Determine file type and extract text
+    ext = get_file_extension(file.filename)
+    
+    if ext in ['txt', 'md', 'markdown']:
+        text = content.decode('utf-8')
+    elif ext == 'pdf':
+        text = extract_text_from_pdf(content)
+    elif ext in ['doc', 'docx']:
+        text = extract_text_from_docx(content)
+    else:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unsupported file format: .{ext}. Supported: txt, md, pdf, doc, docx"
+        )
     
     # Parse segments
     if segment_type == "paragraph":
@@ -50,10 +97,21 @@ async def import_text(
     await conn.commit()
     
     return {
-        "message": f"Imported {len(segments)} segments",
+        "message": f"成功导入 {len(segments)} 个文本片段",
         "count": len(segments),
+        "file_type": ext,
         "segments": [s.model_dump() for s in segments]
     }
+
+
+# Keep old endpoint for backward compatibility
+@router.post("/text")
+async def import_text(
+    file: UploadFile = File(...),
+    segment_type: str = "paragraph"
+):
+    """导入文本文件（兼容旧版本）"""
+    return await import_file(file, segment_type)
 
 
 @router.get("/segments")

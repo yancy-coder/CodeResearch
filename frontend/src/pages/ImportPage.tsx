@@ -42,12 +42,12 @@ export default function ImportPage() {
             点击或拖拽上传文件
           </p>
           <p className="text-sm text-endfield-text-muted">
-            支持 .txt, .md 格式文件
+            支持 .txt, .md, .pdf, .doc, .docx 格式文件
           </p>
           <input
             ref={fileInputRef}
             type="file"
-            accept=".txt,.md"
+            accept=".txt,.md,.pdf,.doc,.docx"
             className="hidden"
             onChange={handleFileSelect}
           />
