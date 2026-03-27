@@ -26,6 +26,56 @@ CoderResearch/
 └── tests/                 # 测试套件
 ```
 
+## 架构重构 (v2.0)
+
+### 分层架构
+
+```
+CLI Layer (cli/)
+├── commands.py     # 命令定义
+├── formatters.py   # 输出格式化
+└── dependencies.py # 依赖注入
+
+Service Layer (services/)
+├── coding_service.py  # 编码工作流
+└── import_service.py  # 导入工作流
+
+Repository Layer (repositories/)
+├── base.py               # Repository 基类
+├── code_repository.py    # 代码 CRUD
+├── category_repository.py # 类属 CRUD
+└── session_repository.py  # 会话管理
+
+Engine Layer (保留)
+├── CodeEngine/
+├── ImportEngine/
+├── TheoryEngine/
+├── MemoEngine/
+├── ForumEngine/
+└── ReportEngine/
+```
+
+### 迁移指南
+
+旧代码 (v1.x):
+```python
+from ImportEngine.agent import ImportEngine
+engine = ImportEngine()
+```
+
+新代码 (v2.0):
+```python
+from cli.dependencies import get_import_service
+service = get_import_service()
+segments = service.import_file("data.txt")
+```
+
+向后兼容 (v2.0):
+```python
+from compatibility import get_legacy_import_engine
+engine = get_legacy_import_engine()  # 发出 DeprecationWarning
+```
+
 ## 核心概念
 
 ### 编码单元 IR
