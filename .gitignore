@@ -60,3 +60,9 @@ frontend/.env.local
 *.bak
 *.tmp
 *.temp
+
+# Output directories
+outputs/
+report_outputs/
+*.html
+*.docx
