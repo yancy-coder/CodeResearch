@@ -7,8 +7,7 @@ from datetime import datetime
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from sqlalchemy import create_engine, Column, String, DateTime, Text, JSON
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 import json
 
 from config import settings

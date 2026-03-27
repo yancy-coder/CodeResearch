@@ -1,12 +1,17 @@
 """
 CoderResearch 全局配置
 """
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 
 
 class Settings(BaseSettings):
     """应用配置类"""
+    
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
     
     # LLM 配置
     openai_api_key: str = ""
@@ -28,10 +33,6 @@ class Settings(BaseSettings):
     enable_ai_peer_review: bool = True
     enable_devil_advocate: bool = True
     consensus_threshold: float = 0.8
-    
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 # 全局配置实例

@@ -26,9 +26,10 @@ export const categoriesApi = {
 
 // Import API
 export const importApi = {
-  upload: (file: File) => {
+  upload: (file: File, segmentType: string = 'paragraph') => {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('segment_type', segmentType);
     return api.post('/import/file', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });

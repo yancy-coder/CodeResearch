@@ -2,8 +2,7 @@
 CodebookDB - 代码本数据库与版本控制
 """
 from sqlalchemy import create_engine, Column, String, DateTime, Float, Text, JSON, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime
 import json
 from typing import List, Dict, Optional
