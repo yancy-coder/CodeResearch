@@ -1,115 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
+@layer base {
+  * {
+    @apply border-endfield-border;
+  }
+  
+  body {
+    @apply bg-endfield-bg-primary text-endfield-text-primary font-sans antialiased;
+  }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-endfield-bg-secondary;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-endfield-border rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-endfield-text-muted;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+@layer components {
+  /* Endfield card style */
+  .ef-card {
+    @apply bg-endfield-bg-card border border-endfield-border rounded-lg;
+    @apply hover:border-endfield-accent/50 transition-all duration-200;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  
+  /* Endfield button styles */
+  .ef-btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-150;
+    @apply focus:outline-none focus:ring-2 focus:ring-endfield-accent/50;
   }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  
+  .ef-btn-primary {
+    @apply ef-btn bg-endfield-accent text-white;
+    @apply hover:bg-endfield-accent-hover;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+  
+  .ef-btn-secondary {
+    @apply ef-btn bg-endfield-bg-secondary text-endfield-text-secondary;
+    @apply hover:bg-endfield-bg-hover hover:text-endfield-text-primary;
   }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  
+  /* Endfield input style */
+  .ef-input {
+    @apply w-full px-4 py-2 bg-endfield-bg-secondary border border-endfield-border rounded-md;
+    @apply text-endfield-text-primary placeholder-endfield-text-muted;
+    @apply focus:outline-none focus:border-endfield-accent focus:ring-1 focus:ring-endfield-accent;
+  }
+  
+  /* Tech divider */
+  .ef-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-endfield-border to-transparent;
+  }
+  
+  /* Status badge */
+  .ef-badge {
+    @apply px-2 py-0.5 text-xs font-mono rounded border;
+  }
+  
+  .ef-badge-accent {
+    @apply ef-badge bg-endfield-accent/10 border-endfield-accent text-endfield-accent;
+  }
 }
