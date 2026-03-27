@@ -1,123 +1,93 @@
-# CoderResearch
+# CoderResearch v3.0
 
-## 定性研究智能编码系统
+## 定性研究智能编码系统 - 全栈重构版
 
-CoderResearch 是一个面向质性研究（Qualitative Research）的多 Agent 编码系统，基于扎根理论（Grounded Theory）方法论，支持从数据导入到理论建构的全流程自动化辅助。
+CoderResearch 是一个面向质性研究（Qualitative Research）的多 Agent 编码系统，基于扎根理论（Grounded Theory）方法论。
 
-## 🏗️ 系统架构（v2.0 分层架构）
+## 🆕 v3.0 全新架构
+
+### 技术栈
+
+| 层级 | 技术 | 说明 |
+|------|------|------|
+| **前端** | React 18 + TypeScript + TailwindCSS | 终末地风格 UI |
+| **后端** | FastAPI + Python 3.11+ | 高性能异步 API |
+| **数据库** | SQLite (aiosqlite) | 轻量级本地存储 |
+| **状态管理** | Zustand + React Query | 简洁高效 |
+
+### 项目结构
 
 ```
 CoderResearch/
-├── cli/                   # CLI 层 - 命令行界面
-│   ├── commands.py        # 命令定义
-│   ├── formatters.py      # 输出格式化
-│   └── dependencies.py    # 依赖注入
+├── backend/              # FastAPI 后端
+│   ├── main.py          # 应用入口
+│   ├── database.py      # SQLite 数据库
+│   ├── models.py        # Pydantic 模型
+│   └── routers/         # API 路由
+│       ├── codes.py
+│       ├── categories.py
+│       ├── sessions.py
+│       └── import_data.py
 │
-├── services/              # Service 层 - 业务工作流
-│   ├── coding_service.py  # 编码工作流服务
-│   └── import_service.py  # 导入工作流服务
+├── frontend/            # React 前端
+│   ├── src/
+│   │   ├── components/  # UI 组件
+│   │   ├── pages/       # 页面
+│   │   ├── api/         # API 客户端
+│   │   ├── store/       # 状态管理
+│   │   └── types/       # TypeScript 类型
+│   └── package.json
 │
-├── repositories/          # Repository 层 - 数据访问
-│   ├── base.py            # Repository 基类
-│   ├── code_repository.py      # 代码 CRUD
-│   ├── category_repository.py  # 类属 CRUD
-│   └── session_repository.py   # 会话管理
-│
-├── CodeEngine/            # Engine 层 - 编码引擎
-│   ├── open_coding/       # 开放编码
-│   ├── axial_coding/      # 轴心编码
-│   └── selective_coding/  # 选择性编码
-│
-├── ImportEngine/          # 数据导入与预处理
-├── TheoryEngine/          # 理论建构与可视化
-├── MemoEngine/            # 备忘录撰写与反思
-├── ForumEngine/           # 多 Agent 编码协作
-├── CodebookDB/            # 代码本数据库与版本控制
-├── ReportEngine/          # 研究报告生成
-│
-└── compatibility.py       # 向后兼容层（v1.x 迁移用）
+└── start.py             # 一键启动脚本
 ```
 
 ## 🚀 快速开始
 
+### 环境要求
+
+- Python 3.11+
+- Node.js 18+
+
+### 安装与启动
+
 ```bash
-# 安装依赖
+# 一键启动（自动安装依赖）
+python start.py
+
+# 或手动启动
+# 后端
+cd backend
 pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
 
-# 配置环境变量
-cp .env.example .env
-# 编辑 .env 填入你的 API Key
-
-# 运行示例
-python app.py --help
-
-# 完整工作流示例
-python app.py import-data data.txt
-python app.py list-codes
+# 前端（新终端）
+cd frontend
+npm install
+npm run dev
 ```
 
-## 🔄 架构分层说明
+### 访问服务
 
-| 层级 | 职责 | 示例 |
-|------|------|------|
-| **CLI** | 参数解析、用户交互 | `app.py version` |
-| **Service** | 业务逻辑编排 | `CodingService.run_full_pipeline()` |
-| **Engine** | 核心算法实现 | `OpenCodingAgent.code_segment()` |
-| **Repository** | 数据持久化 | `CodeRepository.save(entity)` |
+- **前端界面**: http://localhost:5173
+- **API 文档**: http://localhost:8000/docs
+- **健康检查**: http://localhost:8000/api/health
+
+## 🎨 终末地 UI 风格
+
+v3.0 采用《明日方舟：终末地》游戏 UI 设计风格：
+
+- **深空黑** (#0a0a0f) 作为主背景
+- **终末地橙** (#ff6b35) 作为强调色
+- 几何线条分割，科技感十足
+- 精细的动画过渡效果
 
 ## 📚 核心功能
 
-- **智能编码辅助**：AI 辅助开放编码，逐行生成初始代码
-- **信度检验**：多编码者一致性计算（Kappa 系数）
-- **负向案例追踪**：自动标记不符合理论的案例
-- **版本控制**：代码演化历史追踪（Git 式管理）
-- **协作讨论**：AI 质疑者角色，主动挑战研究者假设
-- **多格式导出**：支持 NVivo、Atlas.ti、DOCX、LaTeX
-
-## 🆕 v2.0 新特性
-
-- **分层架构**：清晰的 CLI → Service → Engine → Repository 分层
-- **依赖注入**：通过 `cli/dependencies.py` 管理服务生命周期
-- **Repository 模式**：统一的数据访问抽象
-- **向后兼容**：`compatibility.py` 提供 v1.x API 兼容
-
-## 📖 使用指南
-
-### 基本命令
-
-```bash
-# 系统健康检查
-python app.py health
-
-# 导入数据
-python app.py import-data interview.txt --segment-type paragraph
-
-# 查看代码本
-python app.py list-codes
-
-# 显示版本
-python app.py version
-```
-
-### 程序化使用
-
-```python
-# 新 API (v2.0 推荐)
-from cli.dependencies import get_coding_service, get_import_service
-
-import_service = get_import_service()
-segments = import_service.import_file("data.txt")
-
-coding_service = get_coding_service()
-result = coding_service.run_open_coding(segments)
-```
-
-```python
-# 向后兼容 (v1.x)
-from compatibility import get_legacy_import_engine
-
-engine = get_legacy_import_engine()  # 会发出 DeprecationWarning
-```
+- 📥 **数据导入**: 支持 TXT/Markdown 文件导入
+- 🏷️ **开放编码**: AI 辅助逐行生成初始代码
+- 📊 **轴心编码**: 归类、找关系、建维度
+- 🎯 **选择性编码**: 识别核心类属，构建理论
+- 📈 **可视化**: 编码分布、类属关系图表
 
 ## 📄 许可证
 
