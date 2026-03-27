@@ -29,7 +29,7 @@ export const importApi = {
   upload: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post('/import/text', formData, {
+    return api.post('/import/file', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },

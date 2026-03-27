@@ -17,9 +17,11 @@ export default function ImportPage() {
     
     try {
       const res = await importApi.upload(file);
-      setMessage(`成功导入 ${res.data.count} 个文本片段`);
-    } catch (err) {
-      setMessage('导入失败，请重试');
+      setMessage(res.data.message || `成功导入 ${res.data.count} 个文本片段`);
+    } catch (err: any) {
+      console.error('Import error:', err);
+      const errorMsg = err.response?.data?.detail || '导入失败，请重试';
+      setMessage(errorMsg);
     } finally {
       setIsUploading(false);
     }
