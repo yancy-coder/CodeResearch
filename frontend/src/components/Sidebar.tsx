@@ -15,9 +15,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-endfield-border">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-endfield-accent rounded flex items-center justify-center">
-            <span className="text-white font-bold text-sm">CR</span>
-          </div>
+          <img 
+            src="/icon-64.png" 
+            alt="CoderResearch" 
+            className="w-10 h-10 rounded-lg"
+          />
           <div>
             <h1 className="text-lg font-bold text-endfield-text-primary">CoderResearch</h1>
             <p className="text-xs text-endfield-text-muted">v3.0.0</p>
