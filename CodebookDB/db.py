@@ -66,6 +66,16 @@ class CodeOccurrenceModel(Base):
     code = relationship("CodeModel", back_populates="occurrences")
 
 
+class SessionModel(Base):
+    """会话数据模型"""
+    __tablename__ = "sessions"
+    
+    id = Column(String, primary_key=True)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    data = Column(JSON, default=dict)
+
+
 class VersionHistoryModel(Base):
     """版本历史记录"""
     __tablename__ = "version_history"
