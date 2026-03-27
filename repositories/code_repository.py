@@ -44,7 +44,9 @@ class CodeRepository(Repository[CodeEntity]):
             "label": entity.label,
             "definition": entity.definition,
             "level": entity.level,
-            "created_by": entity.created_by
+            "created_by": entity.created_by,
+            "category_id": entity.category_id,
+            "version": entity.version
         }
         return self.db.save_code(data)
     
@@ -62,10 +64,19 @@ class CodeRepository(Repository[CodeEntity]):
             session.close()
     
     def _to_entity(self, data: dict) -> CodeEntity:
+        def parse_datetime(val):
+            if isinstance(val, str):
+                return datetime.fromisoformat(val)
+            return val or datetime.now()
+        
         return CodeEntity(
             id=data["id"],
             label=data["label"],
             definition=data.get("definition", ""),
             level=data.get("level", "open"),
-            created_by=data.get("created_by", "human")
+            category_id=data.get("category_id"),
+            created_by=data.get("created_by", "human"),
+            created_at=parse_datetime(data.get("created_at")),
+            updated_at=parse_datetime(data.get("updated_at")),
+            version=data.get("version", "1.0")
         )

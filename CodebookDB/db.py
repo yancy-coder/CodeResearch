@@ -98,7 +98,9 @@ class CodebookDB:
                 label=code_data["label"],
                 definition=code_data.get("definition", ""),
                 level=code_data.get("level", "open"),
-                created_by=code_data.get("created_by", "human")
+                created_by=code_data.get("created_by", "human"),
+                category_id=code_data.get("category_id"),
+                version=code_data.get("version", "1.0")
             )
             session.add(code)
             
@@ -131,7 +133,10 @@ class CodebookDB:
                     "definition": code.definition,
                     "level": code.level,
                     "created_by": code.created_by,
-                    "created_at": code.created_at.isoformat() if code.created_at else None
+                    "category_id": code.category_id,
+                    "created_at": code.created_at.isoformat() if code.created_at else None,
+                    "updated_at": code.updated_at.isoformat() if code.updated_at else None,
+                    "version": code.version
                 }
             return None
         finally:
@@ -151,7 +156,12 @@ class CodebookDB:
                     "id": c.id,
                     "label": c.label,
                     "definition": c.definition,
-                    "level": c.level
+                    "level": c.level,
+                    "created_by": c.created_by,
+                    "category_id": c.category_id,
+                    "created_at": c.created_at.isoformat() if c.created_at else None,
+                    "updated_at": c.updated_at.isoformat() if c.updated_at else None,
+                    "version": c.version
                 }
                 for c in codes
             ]
